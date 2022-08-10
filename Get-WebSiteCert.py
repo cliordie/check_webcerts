@@ -3,9 +3,32 @@ import datetime
 import socket
 from ranges import ipranges
 import ipaddress
+import psycopg2
 
+## PostgreSQL Variables
+psdbname = ''
+psdbserver = ''
+psdbuser = ''
+psdbpass = ''
 
-def get_certificate(hostname, port):
+## Insert Line into OpsView DB
+def newCertline(serverNM,serverIP,certIssuedTo,certIssuedBy,certExpiration):
+    currentDate = datetime.date.today()
+
+    conn = psycopg2.connect (
+        dbname = psdbname,
+        host = psdbserver,
+        user = psdbuser,
+        password = psdbpass 
+    )
+    dbinsert = '''INSERT INTO certificates (server_nm, server_ip, cert_issued_to, cert_issued_by, cert_expiration, data_date) Values (%s, %s, %s, %s, %s, %s)'''
+    cur = conn.cursor()
+    cur.execute(dbinsert, (serverNM,serverIP,certIssuedTo,certIssuedBy,certExpiration,currentDate))
+    conn.commit()
+    cur.close()
+
+## Get Certificate Data
+def get_certificate(passipaddr, hostname, port):
     err = 0
     peername = None
     cert = None
@@ -37,6 +60,9 @@ def get_certificate(hostname, port):
 
         sock_ssl.close()
 
+        newCertline(serverNM=hostname, serverIP=passipaddr, certIssuedTo=issued_to, certIssuedBy=issued_by, certExpiration=certExpDate)
+
+## Iterate through all IP Ranges in "Ranges.py"
 for range in ipranges:
     for ip in ipaddress.IPv4Network(range):
         print ("-----------------------------")
@@ -56,5 +82,5 @@ for range in ipranges:
         if err == 0:
             #print ("hostname   :",hostname)
             #print ("IP Address :",ip)
-            get_certificate (hostname=hostname,port=443)
+            get_certificate (passipaddr=ipaddr,hostname=hostname,port=443)
         
