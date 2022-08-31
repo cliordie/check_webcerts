@@ -7,25 +7,18 @@ import ipaddress
 from time import timezone
 import psycopg2
 from infoblox import getNetworks
-import appauth
-
-
-## PostgreSQL Variables
-psdbname = 'opsView'
-psdbserver = 'iuhlopsvap01.chp.clarian.org'
-psdbuser = appauth.getpsqluser()
-psdbpass = appauth.getpsqlsecrect()
+import db
 
 ## Insert Line into OpsView DB
 def newCertline(serverNM,serverIP,certIssuedTo,certIssuedBy,certExpiration):
     currentDate = datetime.date.today()
 
     conn = psycopg2.connect (
-        dbname = psdbname,
-        host = psdbserver,
-        user = psdbuser,
-        password = psdbpass,
-        sslmode = 'require'
+        dbname = db.psdbname,
+        host = db.psdbserver,
+        user = db.psdbuser,
+        password = db.psdbpass,
+        sslmode = db.dbsslmode
         
     )
     dbresult = None

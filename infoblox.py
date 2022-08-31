@@ -6,7 +6,7 @@ import appauth
 
 def getNetworks():
     
-    infobloxFQDN = 'scdhcp.chp.clarian.org'
+    infobloxFQDN = 'infobloxaddr.domain.com'
     infobloxUser = appauth.getifbuser()
     infobloxPass = appauth.getifbSecret()
 

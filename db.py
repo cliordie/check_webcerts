@@ -1,7 +1,7 @@
 import appauth
 
 psdbname = 'opsView'
-psdbserver = 'iuhlopsvap01.chp.clarian.org'
+psdbserver = 'psqlServerName.domain.com'
 psdbuser = appauth.getpsqluser()
 psdbpass = appauth.getpsqlsecrect()
 dbsslmode = 'require'

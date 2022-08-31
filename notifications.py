@@ -1,12 +1,12 @@
 from email.mime.text import MIMEText
 import smtplib
 
-smtpServer = 'smtp1.iuhealth.org'
+smtpServer = ''
 
 def certNotification (expDays, serverNM, siteNM, CertEXP):
     subject = expDays + ' Day Certificate Expiration Notice | ' + siteNM
-    sender = 'certmon@iuhealth.org'
-    receivers = ['dcops@iuhealth.org']
+    sender = 'sender@email.com'
+    receivers = ['example@email.com']
     
     text_subtype = 'html'
 
@@ -14,8 +14,8 @@ def certNotification (expDays, serverNM, siteNM, CertEXP):
 
     msg = MIMEText(msgBody, text_subtype)
     msg['Subject'] = subject
-    msg['From'] = 'IUH Certificate Monitor <' + sender + '>'
-    msg['To'] = 'tjhewitt@iuhealth.org'
+    msg['From'] = 'Certificate Monitor <' + sender + '>'
+    msg['To'] = 'example@email.com'
 
     try:
         smtpObj = smtplib.SMTP(smtpServer)
